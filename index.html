@@ -154,7 +154,51 @@ section{position:relative;padding:4.5rem 0}
   to{transform:translateX(9px) rotate(35deg)}
 }
 
-/* ===== anchor:two-paths-css ===== */
+/* ---- 1. two paths ---- */
+#paths{overflow:hidden;padding-top:5.5rem}
+.threads{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.threads path{fill:none;stroke-width:2.5;stroke-linecap:round}
+.threads .thread-him{stroke:var(--sage)}
+.threads .thread-her{stroke:var(--rose)}
+
+.maps-row{display:flex;align-items:center;gap:.5rem;margin-bottom:2.8rem}
+.map-card{
+  flex:1 1 0;min-width:0;background:var(--paper);border:1px solid rgba(79,70,59,.08);
+  border-radius:14px;padding:.85rem .7rem .7rem;box-shadow:var(--shadow);text-align:center;
+}
+.map-card svg{width:80%;height:auto;margin:0 auto .35rem}
+.map-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:600;line-height:1.1}
+.map-sub{font-size:.6rem;color:var(--ink-soft);letter-spacing:.12em;text-transform:uppercase;margin-top:.18rem}
+.map-label{font-size:8.5px;fill:var(--ink-soft);font-family:'Lora',serif}
+.map-dot{fill:var(--rose-deep)}
+.map-land{fill:var(--cream-2);stroke:var(--sage-deep);stroke-width:1.5;stroke-linejoin:round}
+.map-gap{flex:0 0 58px;display:flex;flex-direction:column;align-items:center;gap:.25rem;text-align:center}
+.map-gap .hand{font-size:.95rem;line-height:1.15;color:var(--rose-deep)}
+.gap-line{width:100%;height:auto}
+
+.path-card{width:86%;margin-bottom:2rem;position:relative}
+.path-card.him{margin-right:auto;border-top:3px solid var(--sage)}
+.path-card.her{margin-left:auto;border-top:3px solid var(--rose)}
+.path-card.him .year{background:rgba(156,175,136,.18);color:var(--sage-deep)}
+.path-card.her .year{background:rgba(216,167,167,.22);color:var(--rose-deep)}
+.who-chip{
+  position:absolute;top:-15px;font-family:'Caveat',cursive;font-size:1.1rem;
+  background:var(--paper);padding:.05rem .7rem;border-radius:99px;
+  border:1px solid rgba(79,70,59,.12);line-height:1.5;
+}
+.path-card.him .who-chip{left:14px;color:var(--sage-deep)}
+.path-card.her .who-chip{right:14px;color:var(--rose-deep)}
+
+.flight{margin-top:.9rem;background:var(--cream-2);border-radius:10px;padding:.55rem .55rem .3rem}
+.flight svg{width:100%;height:auto;display:block}
+.flight-path{
+  stroke:var(--sage-deep);stroke-width:1.6;fill:none;
+  stroke-dasharray:4 6;stroke-linecap:round;
+  animation:flightDash 7s linear infinite;
+}
+.flight-label{font-size:9px;fill:var(--ink-soft);font-family:'Lora',serif}
+.flight-stop{fill:var(--rose-deep)}
+@keyframes flightDash{to{stroke-dashoffset:-100}}
 
 /* ===== anchor:converge-pier-css ===== */
 
@@ -774,13 +818,148 @@ function setupReveals(){
 }
 
 /* section renderers (filled in by later build steps) */
-function renderPaths(){ /* anchor:render-paths */ }
+/* ---- simplified, decorative maps ---- */
+const UKRAINE_SVG = `<svg viewBox="0 0 160 110" aria-hidden="true">
+  <path class="map-land" d="M16 48 Q18 32 34 28 Q42 14 62 16 Q82 8 100 18 Q122 14 136 26 Q152 34 146 48 Q140 60 124 62 Q116 72 102 70 Q110 82 102 92 Q92 86 94 74 Q78 80 62 74 Q44 76 32 64 Q14 62 16 48 Z"/>
+  <circle class="map-dot" cx="84" cy="44" r="3.4"/>
+  <text class="map-label" x="84" y="58" text-anchor="middle">Cherkasy</text>
+  <circle class="map-dot" cx="74" cy="34" r="2.2" opacity=".75"/>
+  <text class="map-label" x="72" y="27" text-anchor="middle">Pereiaslav</text>
+</svg>`;
+
+const CALIFORNIA_SVG = `<svg viewBox="0 0 110 160" aria-hidden="true">
+  <path class="map-land" d="M22 8 L64 8 L64 60 L96 104 L94 124 L84 128 L82 138 L58 138 L54 130 Q40 118 34 100 Q22 72 20 44 Q18 24 22 8 Z"/>
+  <circle class="map-dot" cx="72" cy="116" r="3.4"/>
+  <text class="map-label" x="66" y="110" text-anchor="end">Orange County</text>
+  <circle class="map-dot" cx="64" cy="124" r="2" opacity=".75"/>
+  <text class="map-label" x="58" y="152" text-anchor="middle">Huntington Beach</text>
+</svg>`;
+
+const GAP_SVG = `<svg class="gap-line" viewBox="0 0 60 24" aria-hidden="true">
+  <path d="M2 19 Q30 4 58 19" fill="none" stroke="var(--rose-deep)" stroke-width="1.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+  <path d="M30 7c-1.4-2.3-4.8-1.2-4.8 1.3 0 2 2.7 3.6 4.8 5 2.1-1.4 4.8-3 4.8-5 0-2.5-3.4-3.6-4.8-1.3z" fill="var(--rose-deep)"/>
+</svg>`;
+
+const FLIGHT_SVG = `<svg viewBox="0 0 320 80" aria-hidden="true">
+  <path class="flight-path" d="M12 26 C 50 4, 90 60, 122 48 S 172 20, 204 30 S 282 56, 306 42"/>
+  <circle class="flight-stop" cx="12" cy="26" r="3.5"/>
+  <circle class="flight-stop" cx="122" cy="48" r="3"/>
+  <circle class="flight-stop" cx="204" cy="30" r="3"/>
+  <circle class="flight-stop" cx="306" cy="42" r="3.5"/>
+  <text class="flight-label" x="12" y="14" text-anchor="start">Ukraine</text>
+  <text class="flight-label" x="122" y="64" text-anchor="middle">Florida</text>
+  <text class="flight-label" x="204" y="17" text-anchor="middle">Colorado</text>
+  <text class="flight-label" x="306" y="60" text-anchor="end">California</text>
+  <text x="160" y="78" text-anchor="middle" style="font-family:'Caveat',cursive;font-size:14px;fill:var(--sage-deep)">September 2015: home</text>
+</svg>`;
+
+function renderPaths(){
+  $("#mapsRow").innerHTML = `
+    <div class="map-card">${UKRAINE_SVG}<div class="map-name">Ukraine</div><div class="map-sub">his side of the world</div></div>
+    <div class="map-gap" aria-hidden="true">${GAP_SVG}<span class="hand">10,000 km apart</span></div>
+    <div class="map-card">${CALIFORNIA_SVG}<div class="map-name">California</div><div class="map-sub">her side of the world</div></div>`;
+  const flow = $("#pathsFlow");
+  const a = CONFIG.vladPath, b = CONFIG.macyPath;
+  for (let i = 0; i < Math.max(a.length, b.length); i++){
+    if (a[i]) flow.appendChild(pathCard(a[i], "him", i === 0));
+    if (b[i]) flow.appendChild(pathCard(b[i], "her", i === 0));
+  }
+}
+function pathCard(item, side, labeled){
+  const c = el("article", `card path-card reveal ${side}`);
+  if (labeled) c.appendChild(el("span", "who-chip", side === "him" ? CONFIG.names.him : CONFIG.names.her));
+  c.appendChild(photoEl(item.photo, item.title));
+  c.appendChild(el("span", "year", item.year));
+  c.appendChild(el("h3", null, item.title));
+  c.appendChild(el("p", null, item.text));
+  if (item.flight) c.appendChild(el("div", "flight", FLIGHT_SVG));
+  return c;
+}
 function renderConverge(){ /* anchor:render-converge */ }
 function renderPier(){ /* anchor:render-pier */ }
 function renderYear(){ /* anchor:render-year */ }
 function renderBox(){ /* anchor:render-box */ }
 function renderEnding(){ /* anchor:render-ending */ }
-function setupThreads(){ /* anchor:setup-threads */ }
+/* ---- the two threads, drawn as you scroll ---- */
+const SVG_NS = "http://www.w3.org/2000/svg";
+const threadStates = [];
+
+function wavyDown(x, h, amp, seg){
+  let d = `M ${x} 0`, y = 0, s = 1;
+  while (y < h){
+    const ny = Math.min(y + seg, h);
+    d += ` C ${x + amp * s} ${y + seg * 0.33}, ${x + amp * s} ${y + seg * 0.66}, ${x} ${ny}`;
+    y = ny; s = -s;
+  }
+  return d;
+}
+/* after the threads meet, they braid around each other down the page */
+function braidDown(d, cx, y0, h, amp, seg, s){
+  let y = y0;
+  while (y < h){
+    const ny = Math.min(y + seg, h);
+    d += ` C ${cx + amp * s} ${y + seg * 0.33}, ${cx + amp * s} ${y + seg * 0.66}, ${cx} ${ny}`;
+    y = ny; s = -s;
+  }
+  return d;
+}
+function buildThreads(){
+  threadStates.length = 0;
+  [["#paths", "#pathsThreads", false], ["#converge", "#convergeThreads", true]].forEach(([secSel, svgSel, converging]) => {
+    const sec = $(secSel), svg = $(svgSel);
+    if (!sec || !svg) return;
+    const W = sec.clientWidth, H = sec.offsetHeight;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.innerHTML = "";
+    const xHim = Math.max(10, W * 0.035), xHer = W - xHim;
+    const defs = converging
+      ? [
+          { cls: "thread-him", d: braidDown(`M ${xHim} 0 C ${xHim} ${H * 0.16}, ${W / 2 - W * 0.18} ${H * 0.3}, ${W / 2} ${H * 0.42}`, W / 2, H * 0.42, H, 13, 110, 1) },
+          { cls: "thread-her", d: braidDown(`M ${xHer} 0 C ${xHer} ${H * 0.16}, ${W / 2 + W * 0.18} ${H * 0.3}, ${W / 2} ${H * 0.42}`, W / 2, H * 0.42, H, 13, 110, -1) },
+        ]
+      : [
+          { cls: "thread-him", d: wavyDown(xHim, H, Math.min(14, W * 0.02), 170) },
+          { cls: "thread-her", d: wavyDown(xHer, H, Math.min(14, W * 0.02), 170) },
+        ];
+    const paths = defs.map(def => {
+      const p = document.createElementNS(SVG_NS, "path");
+      p.setAttribute("d", def.d);
+      p.setAttribute("class", def.cls);
+      svg.appendChild(p);
+      const L = p.getTotalLength();
+      p.style.strokeDasharray = L;
+      p.style.strokeDashoffset = reduced ? 0 : L;
+      return { p, L };
+    });
+    threadStates.push({ sec, paths });
+  });
+}
+let threadTick = false;
+function drawThreads(){
+  threadTick = false;
+  const vh = window.innerHeight;
+  threadStates.forEach(st => {
+    const r = st.sec.getBoundingClientRect();
+    const prog = Math.min(1, Math.max(0, (vh * 0.88 - r.top) / r.height));
+    st.paths.forEach(({ p, L }) => p.style.strokeDashoffset = L * (1 - prog));
+  });
+}
+function onThreadScroll(){
+  if (!threadTick){ threadTick = true; requestAnimationFrame(drawThreads); }
+}
+let threadResizeTimer = null;
+function setupThreads(){
+  buildThreads();
+  window.addEventListener("load", () => { buildThreads(); if (!reduced) onThreadScroll(); });
+  window.addEventListener("resize", () => {
+    clearTimeout(threadResizeTimer);
+    threadResizeTimer = setTimeout(() => { buildThreads(); if (!reduced) onThreadScroll(); }, 200);
+  });
+  if (!reduced){
+    window.addEventListener("scroll", onThreadScroll, { passive: true });
+    onThreadScroll();
+  }
+}
 function startCounter(){ /* anchor:start-counter */ }
 function setupExtras(){ /* anchor:setup-extras */ }
 
