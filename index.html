@@ -326,7 +326,76 @@ section{position:relative;padding:4.5rem 0}
 .count-lab{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#B9C0D8}
 .count-foot{color:var(--rose);font-size:1.3rem}
 
-/* ===== anchor:year-box-end-css ===== */
+/* ---- 4. year one polaroids ---- */
+.pol-flow{display:flex;flex-direction:column}
+.pol{
+  width:min(86%,340px);margin-bottom:2.1rem;perspective:1200px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.pol:nth-child(odd){align-self:flex-start;margin-left:2%;rotate:-1.6deg}
+.pol:nth-child(even){align-self:flex-end;margin-right:2%;rotate:1.4deg}
+.pol-inner{display:grid;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.7,.25,1)}
+.pol.flipped .pol-inner{transform:rotateY(180deg)}
+.pol-face{
+  grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:var(--paper);border:1px solid rgba(79,70,59,.1);border-radius:6px;
+  box-shadow:0 12px 30px rgba(79,70,59,.16);padding:.7rem .7rem 1.05rem;
+  position:relative;display:flex;flex-direction:column;
+}
+.pol-front .photo{aspect-ratio:1/1;border-radius:3px;margin-bottom:.55rem}
+.pol-date{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rose-deep)}
+.pol-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.32rem;font-weight:600;line-height:1.15;margin:.12rem 0 .3rem}
+.pol-cap{font-size:.84rem;color:var(--ink-soft);line-height:1.55}
+.pol-corner{position:absolute;right:.6rem;bottom:.35rem;font-size:1rem;color:var(--sage-deep);opacity:.85}
+.pol-back{transform:rotateY(180deg);justify-content:center;text-align:center;background:var(--cream-2)}
+.pol-back .hand{font-size:1.4rem;line-height:1.4;color:var(--ink)}
+.pol-back .pol-date{margin-top:.9rem}
+
+/* ---- 5. memory box ---- */
+.box-scene{position:relative;height:440px;display:flex;align-items:flex-end;justify-content:center;perspective:700px}
+.mbox{position:relative;display:block;width:min(240px,70%);height:130px;-webkit-tap-highlight-color:transparent}
+.mbox-body{
+  position:absolute;inset:0;z-index:1;display:block;border-radius:9px;
+  background:linear-gradient(#CDB897, #B89F7C);border:2px solid #A78D67;overflow:hidden;
+}
+.mbox-body::after{
+  content:"";position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(var(--rose) 2px, transparent 2.6px), radial-gradient(var(--sage) 1.6px, transparent 2.2px);
+  background-size:38px 30px, 26px 22px;
+  background-position:6px 8px, 18px 16px;
+}
+.mbox-lid{
+  position:absolute;left:-7px;right:-7px;bottom:calc(100% - 8px);height:44px;z-index:3;display:block;
+  background:linear-gradient(#C0A984, #AE946E);border:2px solid #A78D67;border-radius:9px;
+  transform-origin:top center;transition:transform .9s cubic-bezier(.3,.7,.25,1);
+  box-shadow:0 6px 16px rgba(79,70,59,.18);
+}
+.mbox.open .mbox-lid{transform:rotateX(-108deg)}
+.mbox-heart{position:absolute;left:50%;bottom:calc(100% + 22px);transform:translateX(-50%);z-index:4;transition:opacity .4s}
+.mbox.open .mbox-heart{opacity:0}
+.mbox-note{
+  position:absolute;left:50%;bottom:84px;width:128px;z-index:2;display:block;
+  background:var(--paper);border:1px solid rgba(79,70,59,.2);border-radius:6px;
+  padding:.45rem .5rem;font-size:1.1rem;line-height:1.15;text-align:center;
+  box-shadow:var(--shadow);color:var(--ink);
+  opacity:0;transform:translate(-50%, 46px) rotate(0deg) scale(.4);
+  transition:transform .7s cubic-bezier(.25,.8,.3,1), opacity .5s ease;pointer-events:none;
+}
+.mbox.open .mbox-note{opacity:1;transform:var(--fly)}
+
+/* ---- 6. to be continued ---- */
+#ending{
+  padding-bottom:2.4rem;
+  background:linear-gradient(180deg, var(--cream) 0%, #F8E7D7 55%, var(--cream) 100%);
+}
+.ending-lines{text-align:center;margin:1.4rem 0 0}
+.ending-lines p{font-size:1rem;color:var(--ink-soft);font-style:italic;margin:.6rem 0}
+.ending-big{
+  font-size:clamp(2.7rem, 13vw, 3.8rem);color:var(--rose-deep);
+  text-align:center;margin-top:1.8rem;line-height:1.1;
+}
+.ending-threads{margin-top:1.2rem}
+.ending-threads svg{display:block;margin:0 auto;width:66px;height:auto}
 
 /* ===== anchor:extras-css ===== */
 
@@ -1256,9 +1325,86 @@ function renderPier(){
       <p class="count-foot hand">${CONFIG.counter.footnote}</p>
     </div>`;
 }
-function renderYear(){ /* anchor:render-year */ }
-function renderBox(){ /* anchor:render-box */ }
-function renderEnding(){ /* anchor:render-ending */ }
+function renderYear(){
+  const flow = $("#yearFlow");
+  flow.className = "pol-flow";
+  CONFIG.yearMoments.forEach(m => {
+    const pol = el("div", "pol reveal");
+    pol.setAttribute("role", "button");
+    pol.tabIndex = 0;
+    pol.setAttribute("aria-label", m.title + ". Tap to flip the photo over.");
+    const inner = el("div", "pol-inner");
+    const front = el("div", "pol-face pol-front");
+    front.appendChild(photoEl(m.photo, m.title));
+    front.appendChild(el("p", "pol-date", m.date));
+    front.appendChild(el("h3", "pol-title", m.title));
+    front.appendChild(el("p", "pol-cap", m.caption));
+    front.appendChild(el("span", "pol-corner hand", "flip"));
+    const back = el("div", "pol-face pol-back");
+    back.appendChild(el("p", "hand", m.note));
+    back.appendChild(el("p", "pol-date", m.date));
+    inner.appendChild(front);
+    inner.appendChild(back);
+    pol.appendChild(inner);
+    const toggle = () => pol.classList.toggle("flipped");
+    pol.addEventListener("click", toggle);
+    pol.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
+    });
+    flow.appendChild(pol);
+  });
+}
+
+function renderBox(){
+  const stage = $("#boxStage");
+  const scene = el("div", "box-scene reveal");
+  const box = el("button", "mbox");
+  box.setAttribute("aria-label", "Open the memory box");
+  const FLY = [
+    [-92, -120, -10], [88, -120, 9], [-60, -205, -6],
+    [60, -205, 7], [0, -148, 2], [0, -272, -3],
+  ];
+  CONFIG.boxNotes.forEach((t, i) => {
+    const n = el("span", "mbox-note hand", t);
+    const f = FLY[i % FLY.length];
+    n.style.setProperty("--fly", `translate(calc(-50% + ${f[0]}px), ${f[1]}px) rotate(${f[2]}deg) scale(1)`);
+    n.style.transitionDelay = (i * 0.06) + "s";
+    box.appendChild(n);
+  });
+  box.appendChild(el("span", "mbox-lid"));
+  box.appendChild(el("span", "mbox-heart",
+    `<svg viewBox="0 0 24 22" width="22" aria-hidden="true"><path d="M12 20 C 3 14 1 7 5.5 4.4 C 8.3 2.8 11 4 12 6.5 C 13 4 15.7 2.8 18.5 4.4 C 23 7 21 14 12 20Z" fill="var(--rose-deep)"/></svg>`));
+  box.appendChild(el("span", "mbox-body"));
+  box.addEventListener("click", () => {
+    box.classList.toggle("open");
+    box.setAttribute("aria-label",
+      box.classList.contains("open") ? "Close the memory box" : "Open the memory box");
+  });
+  scene.appendChild(box);
+  stage.appendChild(scene);
+  stage.appendChild(el("p", "tap-hint", "tap the box"));
+  stage.querySelector(".tap-hint").style.textAlign = "center";
+}
+
+function renderEnding(){
+  const E = CONFIG.ending;
+  const flow = $("#endingFlow");
+  flow.appendChild(el("header", "sec-head reveal",
+    `<p class="kicker">${E.kicker}</p><h2>${E.title}</h2>`));
+  const lines = el("div", "ending-lines");
+  E.lines.forEach((t, i) => {
+    const p = el("p", "reveal", t);
+    p.style.transitionDelay = (i * 0.12) + "s";
+    lines.appendChild(p);
+  });
+  flow.appendChild(lines);
+  flow.appendChild(el("p", "ending-big hand reveal", E.big));
+  flow.appendChild(el("div", "ending-threads reveal",
+    `<svg viewBox="0 0 70 100" aria-hidden="true">
+      <path d="M28 0 C 42 18 14 30 28 48 S 42 78 32 96" fill="none" stroke="var(--sage)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M42 0 C 28 18 56 30 42 48 S 28 78 38 96" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>`));
+}
 /* ---- the two threads, drawn as you scroll ---- */
 const SVG_NS = "http://www.w3.org/2000/svg";
 const threadStates = [];
