@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FAF6EE">
+<title>Vlad &amp; Macy: One Year of Us</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23D8A7A7' d='M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================================
+   ONE YEAR OF US - styles
+   Palette: cream, sage, dusty rose, warm ink, night navy.
+   You should not need to edit anything in here; all text, dates, and
+   photo paths live in the CONFIG object at the top of the <script>
+   at the bottom of this file.
+   ===================================================================== */
+
+:root{
+  --cream:#FAF6EE;
+  --cream-2:#F2EBDC;
+  --paper:#FFFDF7;
+  --sage:#9CAF88;
+  --sage-deep:#71855E;
+  --rose:#D8A7A7;
+  --rose-deep:#B97F7F;
+  --ink:#4F463B;
+  --ink-soft:#857867;
+  --gold:#E8C98F;
+  --night:#1A2238;
+  --night-deep:#0C1226;
+  --shadow:0 10px 30px rgba(79,70,59,.10);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Lora',Georgia,'Times New Roman',serif;
+  font-size:16px;
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+.hand{font-family:'Caveat',cursive}
+.wrap{width:min(100% - 2.4rem, 680px);margin-inline:auto;position:relative;z-index:2}
+section{position:relative;padding:4.5rem 0}
+
+/* ---- section headings ---- */
+.sec-head{text-align:center;margin-bottom:2.4rem}
+.kicker{
+  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--sage-deep);font-weight:500;
+}
+.sec-head h2{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(2.1rem, 9vw, 2.8rem);
+  font-weight:600;line-height:1.15;margin:.4rem 0 .8rem;
+}
+.intro{color:var(--ink-soft);max-width:52ch;margin-inline:auto;font-size:.98rem}
+
+/* ---- story cards ---- */
+.card{
+  background:var(--paper);
+  border:1px solid rgba(79,70,59,.08);
+  border-radius:16px;
+  padding:1.15rem 1.15rem 1.3rem;
+  box-shadow:var(--shadow);
+}
+.card .year{
+  display:inline-block;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  padding:.18rem .65rem;border-radius:99px;margin-bottom:.6rem;font-weight:500;
+}
+.card h3{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:1.45rem;font-weight:600;line-height:1.2;margin-bottom:.45rem;
+}
+.card p{font-size:.93rem;color:var(--ink-soft)}
+
+/* ---- photos and placeholders ---- */
+.photo{border-radius:10px;overflow:hidden;margin-bottom:.85rem;aspect-ratio:4/3;background:var(--cream-2)}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo-ph{
+  width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.15rem;background:var(--cream-2);border:1.5px dashed rgba(113,133,94,.45);border-radius:10px;
+}
+.photo-ph .sprig-svg{width:44px;height:44px;opacity:.85}
+.ph-label{font-family:'Caveat',cursive;font-size:1.05rem;color:var(--sage-deep)}
+.ph-file{font-size:.62rem;letter-spacing:.06em;color:var(--ink-soft);font-family:ui-monospace,Menlo,monospace}
+
+/* ---- reveal on scroll ---- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease, transform .9s cubic-bezier(.22,.8,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---- cover ---- */
+.cover{
+  position:relative;min-height:100vh;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;padding:2rem 1.5rem;
+}
+.cover-names{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;
+  font-size:clamp(3.4rem, 17vw, 5.5rem);line-height:1.02;margin:.8rem 0 1rem;
+}
+.cover-names span{display:block}
+.cover-names .amp{
+  font-family:'Caveat',cursive;color:var(--rose-deep);
+  font-size:clamp(2rem, 9vw, 3rem);line-height:1.25;
+}
+.cover-sub{color:var(--ink-soft);font-style:italic;max-width:34ch;margin-inline:auto}
+.scroll-hint{
+  position:absolute;bottom:max(1.6rem, env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;color:var(--sage-deep);
+}
+.scroll-hint .hand{font-size:1.15rem}
+.hint-line{
+  width:1.5px;height:34px;border-radius:2px;
+  background:linear-gradient(to bottom, var(--sage-deep), transparent);
+  animation:hintDrop 1.8s ease-in-out infinite;
+}
+@keyframes hintDrop{
+  0%{transform:scaleY(.2);transform-origin:top;opacity:0}
+  45%{transform:scaleY(1);opacity:1}
+  100%{transform:scaleY(1);transform-origin:top;opacity:0}
+}
+.sprig{position:absolute;width:92px;height:92px;opacity:.8;pointer-events:none}
+.sprig svg{width:100%;height:100%}
+.c-tl{top:10px;left:6px;transform:rotate(90deg)}
+.c-tr{top:10px;right:6px;transform:rotate(180deg)}
+.c-bl{bottom:10px;left:6px}
+.c-br{bottom:10px;right:6px;transform:scaleX(-1)}
+
+/* falling petals */
+.petals{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.petal{position:absolute;top:-26px;animation:petalFall linear infinite}
+.petal i{
+  display:block;width:10px;height:14px;background:var(--rose);
+  border-radius:80% 12% 80% 12%;
+  animation:petalSway ease-in-out infinite alternate;
+}
+.petal:nth-child(3n) i{background:var(--sage);width:8px;height:13px}
+.petal:nth-child(4n) i{background:var(--rose-deep)}
+@keyframes petalFall{to{transform:translateY(112vh)}}
+@keyframes petalSway{
+  from{transform:translateX(-9px) rotate(-40deg)}
+  to{transform:translateX(9px) rotate(35deg)}
+}
+
+/* ===== anchor:two-paths-css ===== */
+
+/* ===== anchor:converge-pier-css ===== */
+
+/* ===== anchor:year-box-end-css ===== */
+
+/* ===== anchor:extras-css ===== */
+
+/* ---- toast (little notes that pop up) ---- */
+.toast{
+  position:fixed;left:50%;bottom:max(1.4rem, env(safe-area-inset-bottom));
+  transform:translate(-50%, 16px);z-index:60;
+  width:min(88vw, 340px);background:var(--paper);color:var(--ink);
+  border:1px solid rgba(79,70,59,.12);border-radius:14px;
+  padding:.85rem 1.05rem;box-shadow:0 14px 40px rgba(12,18,38,.25);
+  font-family:'Caveat',cursive;font-size:1.25rem;line-height:1.35;text-align:center;
+  opacity:0;pointer-events:none;transition:opacity .35s ease, transform .35s ease;
+}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+
+/* ---- modal ---- */
+.modal{
+  position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
+  background:rgba(20,16,11,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;transition:opacity .3s ease;padding:1.4rem;
+}
+.modal.show{opacity:1;pointer-events:auto}
+.modal-panel{
+  background:var(--paper);border-radius:18px;max-width:380px;width:100%;
+  padding:1.6rem 1.4rem 1.5rem;text-align:center;position:relative;
+  box-shadow:0 24px 70px rgba(12,18,38,.4);
+  transform:scale(.92);transition:transform .3s cubic-bezier(.22,.8,.3,1);
+}
+.modal.show .modal-panel{transform:scale(1)}
+.modal-close{
+  position:absolute;top:.5rem;right:.7rem;font-size:1.5rem;color:var(--ink-soft);
+  width:42px;height:42px;line-height:1;
+}
+
+/* ---- footer ---- */
+.site-foot{
+  text-align:center;padding:3.2rem 1.4rem calc(2.6rem + env(safe-area-inset-bottom));
+  position:relative;
+}
+.foot-sign{font-size:1.3rem;color:var(--ink-soft);max-width:30ch;margin:0 auto .9rem}
+.paw-btn{
+  display:inline-flex;align-items:center;gap:.4rem;color:var(--ink-soft);
+  padding:.5rem .9rem;border-radius:99px;border:1px dashed rgba(79,70,59,.25);
+}
+.paw-btn svg{width:20px;height:20px;opacity:.7}
+.paw-btn .hand{font-size:1.05rem}
+
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001s !important;animation-iteration-count:1 !important;transition-duration:.001s !important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<header class="cover" id="cover">
+  <div class="sprig c-tl" aria-hidden="true"></div>
+  <div class="sprig c-tr" aria-hidden="true"></div>
+  <div class="sprig c-bl" aria-hidden="true"></div>
+  <div class="sprig c-br" aria-hidden="true"></div>
+  <div class="petals" id="petals" aria-hidden="true"></div>
+  <p class="kicker" id="coverKicker"></p>
+  <h1 class="cover-names">
+    <span id="nameHim"></span>
+    <span class="amp" aria-hidden="true">&amp;</span>
+    <span id="nameHer"></span>
+  </h1>
+  <p class="cover-sub" id="coverSub"></p>
+  <div class="scroll-hint" aria-hidden="true">
+    <span class="hand">scroll to begin</span>
+    <span class="hint-line"></span>
+  </div>
+</header>
+
+<main>
+  <!-- ============ 1. TWO PATHS (childhoods, side by side) ============ -->
+  <section id="paths">
+    <svg class="threads" id="pathsThreads" aria-hidden="true" preserveAspectRatio="none"></svg>
+    <div class="wrap">
+      <header class="sec-head reveal" data-sec="paths"></header>
+      <div class="maps-row reveal" id="mapsRow"></div>
+      <div id="pathsFlow"></div>
+    </div>
+  </section>
+
+  <!-- ============ 2. THE THREADS CONVERGE (how we met) ============ -->
+  <section id="converge">
+    <svg class="threads" id="convergeThreads" aria-hidden="true" preserveAspectRatio="none"></svg>
+    <div class="wrap">
+      <header class="sec-head reveal" data-sec="converge"></header>
+      <div id="convergeFlow"></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. THE PIER (the night it became official) ============ -->
+  <section id="pier">
+    <div id="pierScene"></div>
+    <div class="wrap">
+      <div id="pierAfter"></div>
+      <div id="counterBlock"></div>
+    </div>
+  </section>
+
+  <!-- ============ 4. OUR FIRST YEAR (polaroid wall) ============ -->
+  <section id="year">
+    <div class="wrap">
+      <header class="sec-head reveal" data-sec="year"></header>
+      <div id="yearFlow"></div>
+    </div>
+  </section>
+
+  <!-- ============ 5. THE MEMORY BOX ============ -->
+  <section id="box">
+    <div class="wrap">
+      <header class="sec-head reveal" data-sec="box"></header>
+      <div id="boxStage"></div>
+    </div>
+  </section>
+
+  <!-- ============ 6. TO BE CONTINUED ============ -->
+  <section id="ending">
+    <div class="wrap">
+      <div id="endingFlow"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <p class="foot-sign hand" id="signoff"></p>
+  <button class="paw-btn" id="pawBtn" aria-label="A small surprise">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><ellipse cx="7" cy="9" rx="1.8" ry="2.4"/><ellipse cx="12" cy="7.4" rx="1.8" ry="2.4"/><ellipse cx="17" cy="9" rx="1.8" ry="2.4"/><path d="M12 11c-3.1 0-5.6 2.5-5.6 5 0 1.7 1.3 2.8 2.9 2.8 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.6 0 2.9-1.1 2.9-2.8 0-2.5-2.5-5-5.6-5z"/></g></svg>
+    <span class="hand">psst</span>
+  </button>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-panel" id="modalPanel"></div>
+</div>
+
+<script>
+/* =====================================================================
+
+   ████  EDIT ZONE  ████
+
+   EVERYTHING you might want to change lives in this CONFIG object:
+   names, dates, the pier timestamp, every block of story text, every
+   photo path, the star memories, the notes inside the memory box.
+
+   PHOTOS: drop your image files into the  photos/  folder using the
+   filenames below (or change the "photo:" values to match your files).
+   Until a photo exists, the site shows a pretty botanical placeholder
+   with the expected filename written on it.
+
+   You should never need to touch anything below the line that says
+   "END OF EDIT ZONE".
+
+   ===================================================================== */
+
+const CONFIG = {
+
+  names: { him: "Vlad", her: "Macy" },
+
+  cover: {
+    kicker: "June 10, 2025 - June 10, 2026",
+    subtitle: "One year of us, and the two long roads that led to a pier.",
+  },
+
+  /* ---- THE PIER MOMENT ----------------------------------------------
+     timestamp drives the live "time together" counter.
+     Format: YYYY-MM-DDTHH:MM:SS-07:00  (the -07:00 is California summer
+     time; leave it unless the moment happened in another timezone). */
+  pier: {
+    timestamp: "2025-06-10T21:00:00-07:00",
+    dateLine: "June 10, 2025 · around 9 in the evening",
+    label: "Huntington Beach Pier",
+    coords: "33.652999, -118.006213",
+    saidYes: "I asked. She said yes.",
+    bracelet: "That night came with a Pandora bracelet and a heart charm engraved M + V. She has worn it ever since, and the charms keep coming.",
+    starsHint: "The stars above this pier remember things. Tap the bright ones.",
+  },
+
+  counter: {
+    heading: "We have been us for",
+    footnote: "...and counting. Every single second.",
+  },
+
+  /* ---- SECTION HEADINGS AND INTRO LINES ---- */
+  sections: {
+    paths: {
+      kicker: "1999 - 2025",
+      title: "Two Paths",
+      intro: "Two kids, born five years and ten thousand kilometers apart, each walking their own long road toward a pier neither of them knew about yet.",
+    },
+    converge: {
+      kicker: "Spring 2025",
+      title: "The Threads Cross",
+      intro: "Both of them had privately decided the same thing: one more date, and if this one goes badly too, I am taking a break from all of it. It did not go badly.",
+    },
+    year: {
+      kicker: "Year one",
+      title: "Our First Year",
+      intro: "Three hundred sixty-five days, give or take a broken bone. Here are the keepers. Tap any photo to turn it over.",
+    },
+    box: {
+      kicker: "A box of us",
+      title: "The Memory Box",
+      intro: "While she was away on a cruise, he spent three sleepless days building her a hand-made box of every memory so far. This is its little digital cousin. Go on, tap it.",
+    },
+  },
+
+  /* ---- HIS PATH (left thread, sage) -------------------------------- */
+  vladPath: [
+    {
+      year: "1999",
+      title: "A stubborn arrival",
+      text: "Born in Pereiaslav, Ukraine, after a delivery that took two full days and nearly took his mom with it. It took her months to recover. He, meanwhile, was already busy learning everything in sight.",
+      photo: "photos/vlad-baby.jpg",
+    },
+    {
+      year: "2000s",
+      title: "Cherkasy",
+      text: "A city kid who wanted to be exactly like his dad, an army officer of eighteen years. Math, sports, computers: he was that kid. English class felt pointless in Ukraine, so he skipped the effort. How the turns have tabled.",
+      photo: "photos/vlad-cherkasy.jpg",
+    },
+    {
+      year: "Every summer",
+      title: "Tsybli, the village",
+      text: "Summers at his grandparents' village meant feeding the animals and long days of field work, including planting and harvesting potatoes under a very hot sun. Winters meant flying down snowy slopes on a backpack.",
+      photo: "photos/vlad-village.jpg",
+    },
+    {
+      year: "2005",
+      title: "The tank radiator computer",
+      text: "His dad sold a written-off tank radiator (it spent a few days hidden in forest bushes waiting for the buyer, very official) and bought six-year-old Vlad his first computer. Need for Speed: Underground 2 lit the fuse. He decided on the spot to become the person who builds things like that.",
+      photo: "photos/vlad-computer.jpg",
+    },
+    {
+      year: "2015",
+      title: "Across an ocean",
+      text: "At fifteen, with tensions rising and the future at home looking thin, the family of five started over in America. One Florida summer of fourteen-hour kitchen shifts bought the family car. Two months in Colorado came and went. Then September 2015: Orange County, California. Home, instantly and permanently.",
+      photo: "photos/vlad-move.jpg",
+      flight: true,
+    },
+    {
+      year: "2015 - 2021",
+      title: "The plan, executed",
+      text: "Two years of high school in Dana Point (one year skipped, thank you Ukrainian transcripts), two years at Saddleback College, then UCI and a degree, with a job landed in his very first quarter that he still loves today. The kid with the tank radiator computer made it.",
+      photo: "photos/vlad-grad.jpg",
+    },
+    {
+      year: "2021 - 2025",
+      title: "Bass drops and a gray feeling",
+      text: "His first EDC Las Vegas was a blast, until the photos came back. So: nutrition, the gym, volleyball with his brother Ivan, and a year later he walked back into EDC proud of the guy in the mirror. Work was good, life was settled. And still, surrounded by couples under the fireworks, everything had started to feel quietly gray and lonely.",
+      photo: "photos/vlad-edc.jpg",
+    },
+  ],
+
+  /* ---- HER PATH (right thread, dusty rose) -------------------------- */
+  macyPath: [
+    {
+      year: "2004",
+      title: "Worth the wait",
+      text: "Macy arrived in 2004. Vlad simply showed up five years early to scout ahead, learn some things, and get everything ready for her.",
+      photo: "photos/macy-baby.jpg",
+    },
+    {
+      year: "School days",
+      title: "Her own pace",
+      text: "ADHD made school an uphill fight, but her parents tried every program under the sun, and she came out perfectly fine. She recently found out she was once offered a ride on the special ed bus, and honestly, she has been dining out on that joke ever since.",
+      photo: "photos/macy-school.jpg",
+    },
+    {
+      year: "13 years",
+      title: "Politely: do not mess with her",
+      text: "Her parents wanted their girls able to stand up for themselves, so Macy and her younger sister Madison trained Brazilian jiu-jitsu for thirteen years. It was one of the first things she told Vlad on their first date. She tells every date. Smart.",
+      photo: "photos/macy-bjj.jpg",
+    },
+    {
+      year: "Around age 6",
+      title: "Best friends, then sisters",
+      text: "Kaylee and Ashlyn lived right across the street and were already the girls' best friends. Then her parents adopted them, and the street between best friends simply disappeared. Four sisters.",
+      photo: "photos/macy-sisters.jpg",
+    },
+    {
+      year: "Summers",
+      title: "Lake Arrowhead",
+      text: "Her grandparents' cabin on the lake came with a boat, wakeboarding, rafting, and every watersport a kid could want, plus family cruises and trips to Hawaii and Mexico. Fun fact her whole family will confirm: she does not like sand.",
+      photo: "photos/macy-lake.jpg",
+    },
+    {
+      year: "College",
+      title: "Five degrees. Five.",
+      text: "Five associate degrees from her Orange County community college. The original plan was prison warden; the final answer was elementary school teacher. Now she is at CSUF, one year from her bachelor's, already working with SPED kids as a sub and teacher's aide.",
+      photo: "photos/macy-degrees.jpg",
+    },
+    {
+      year: "2024",
+      title: "Paintings and a Princess",
+      text: "Her room was full of anime characters she painted on plexiglass, taken down only because falling glass and a sleeping face are a bad combination. Her white Persian cat Cyra, formally addressed as Princess, ruled the house; \"Hiiiii Princess\" from the front door meant Macy was home. With her sisters moved out and her friend Jennifer keeping her company, she started looking for her person too. It was brutal out there.",
+      photo: "photos/macy-cyra.jpg",
+    },
+  ],
+
+  /* ---- HOW WE MET (convergence cards, in order) ---------------------- */
+  meeting: [
+    {
+      date: "Spring 2025",
+      title: "Two burnouts, one app",
+      text: "His Hinge photos were terrible: a motorcycle helmet, Halloween makeup, the side of his face. She swiped anyway. He had been ghosted into numbness; she had survived about thirty bad dates, including one she escaped via a fake emergency call from her mom. Macy was his third in-person date. He was just about her last try.",
+      photo: "photos/the-app.jpg",
+    },
+    {
+      date: "The first date",
+      title: "Dan Da Dan and a cloud of calm",
+      text: "At her place, she got him feeling very, very relaxed, then put on the strangest anime she owned: Dan Da Dan. She spent that night certain she had ruined everything. He messaged her first thing the next morning, because it was the best date he had ever been on.",
+      photo: "photos/first-date.jpg",
+    },
+    {
+      date: "The second date",
+      title: "The ferris wheel",
+      text: "Irvine Spectrum, end of the night, two nervous people at the top of a ferris wheel. Then, the smoothest line ever attempted: \"Well, I didn't buy these ferris wheel tickets for nothing.\" They both knew exactly how cringy it was. The kiss was perfect anyway. The rest of that evening is, let's say, classified.",
+      photo: "photos/ferris-wheel.jpg",
+      wheel: true,
+    },
+    {
+      date: "The fourth date",
+      title: "Tiramisu diplomacy",
+      text: "He met her parents carrying a tiramisu cake, not knowing her mom had spent years calling it tiramipoo before her dad finally converted her. The cake landed, the story got told, everyone laughed. That same date, he said \"I love you\" first.",
+      photo: "photos/parents.jpg",
+    },
+    {
+      date: "A few days later",
+      title: "Candy, Legos, and four words",
+      text: "She needed a little time to say it back, and she refused to say it over text. So she drove from Huntington Beach to Mission Viejo with an armful of candy and Legos. \"Do you know why I came all the way here? To tell you that I love you.\" Best feeling in the world.",
+      photo: "photos/i-love-you.jpg",
+    },
+    {
+      date: "Those weeks",
+      title: "The green Kawasaki era",
+      text: "He rode his green Kawasaki Ninja to her place constantly, to the certain delight of her neighbors. She kept hinting that he should officially ask her to be his girlfriend. He, having never dated before, did not know that was a thing people actually did. (She will never let this go.) His answer: one month, exactly, from the day they met.",
+      photo: "photos/kawasaki.jpg",
+    },
+  ],
+
+  /* ---- YEAR ONE (polaroid cards; "note" is the handwritten back) ----- */
+  yearMoments: [
+    {
+      date: "June 2025",
+      title: "The memory box",
+      caption: "While she sailed away on a long-planned cruise, he stayed up three nights straight building her a box of every memory so far.",
+      note: "You showed this box to every single relative on that ship's group chat. That is when I knew the three sleepless nights were worth it. One door policy meme included, obviously.",
+      photo: "photos/memory-box.jpg",
+    },
+    {
+      date: "Summer 2025",
+      title: "Pickle Rick, with love",
+      caption: "She painted him Pickle Rick on plexiglass, the same way she painted her anime characters.",
+      note: "\"To my Love, Macy\" on the back. Nobody had ever made me anything like that. I melted, and I do not mean the pickle.",
+      photo: "photos/pickle-rick.jpg",
+    },
+    {
+      date: "Summer 2025",
+      title: "Day Trip Festival",
+      caption: "Her very first festival, chosen as a gentle on-ramp into his world.",
+      note: "Your friends' reaction was the best part: \"YOU went to a RAVE?? Out of ALL people?? You go girl!!\"",
+      photo: "photos/day-trip.jpg",
+    },
+    {
+      date: "Summer 2025",
+      title: "Lake Arrowhead",
+      caption: "Wakeboard lessons from her family, rummikub at the dock, and soon his sister and cousin were invited up too.",
+      note: "Just standing up on that board took everything I had. It looks SO much easier than it is. Rematch every summer, please.",
+      photo: "photos/lake-arrowhead.jpg",
+    },
+    {
+      date: "August 2025",
+      title: "Vegas, fancy edition",
+      caption: "Bellagio for the birthdays, Cirque du Soleil's Ka, the Kings Tournament, and fun guns out in the desert.",
+      note: "Your parents went speechless at the word Bellagio. Honestly, so did we.",
+      photo: "photos/vegas.jpg",
+    },
+    {
+      date: "Fall 2025",
+      title: "The condo project",
+      caption: "A new home in Santa Ana, renovated practically to the studs, with Macy choosing paint, tile, and hand-making the hanging flowers over the bed.",
+      note: "\"The TV is a little too big.\" It is not, dad. Eighty-six inches is exactly right.",
+      photo: "photos/condo.jpg",
+    },
+    {
+      date: "October 11, 2025",
+      title: "Chappell Roan",
+      caption: "A surprise concert for her, and possibly the most fabulous event a straight couple has ever wandered into.",
+      note: "Drag queens, glitter, chaos. We had absolutely no idea what we signed up for. Ten out of ten.",
+      photo: "photos/chappell-roan.jpg",
+    },
+    {
+      date: "October 17, 2025",
+      title: "The arm wrestle",
+      caption: "Left arms, brotherly confidence, a sound everyone swore was the plastic table. It was not the table.",
+      note: "You showered me, dressed me, and loved me through a snapped humerus. Worst luck, best test, no doubts left.",
+      photo: "photos/broken-arm.jpg",
+    },
+    {
+      date: "Oct 31 - Nov 1, 2025",
+      title: "Escape Halloween",
+      caption: "Healing arm and all: Monster High dolls one night, Mad Hatter and Cheshire Cat the next, in costumes Macy made herself.",
+      note: "Strangers stopped me every five minutes for photos. Your Mad Hatter was THAT good.",
+      photo: "photos/escape-halloween.jpg",
+    },
+    {
+      date: "Fall 2025",
+      title: "Knott's Berry Farm",
+      caption: "Macy introduced him to Knott's. Repeatedly.",
+      note: "Ten years in Orange County and I had never been. What was I even doing.",
+      photo: "photos/knotts.jpg",
+    },
+    {
+      date: "December 10, 2025",
+      title: "Six months",
+      caption: "Her: a basket of everything she loves about him and a letter that made him cry. Him: a scavenger hunt, a fake casual mall trip, a bathroom suit change, an emergency green dress, and dinner at Orange Hill.",
+      note: "The firefly charm says \"You light up my life\" and it glows in the dark. You really do, by the way.",
+      photo: "photos/six-months.jpg",
+    },
+    {
+      date: "December 2025",
+      title: "Santa and Mrs. Claus",
+      caption: "Everyone dresses up nicely for Christmas with her family. So did they. Sort of.",
+      note: "Sexy Santa and his sexy Mrs. Claus remain undefeated as a Christmas card concept.",
+      photo: "photos/christmas.jpg",
+    },
+    {
+      date: "January 1, 2026",
+      title: "A very Ukrainian New Year",
+      caption: "A table that could feed three armies, courtesy of his family. Macy met kholodets and renamed it forever.",
+      note: "Meat. Jello. MEAT JELLO. I will never be over it. (The other forty dishes were great.)",
+      photo: "photos/new-year.jpg",
+    },
+    {
+      date: "Spring 2026",
+      title: "Two Easters",
+      caption: "Egg hunting at her grandparents' with money, candy, and tiny bottles inside, then Orthodox Easter with both families at one very full table.",
+      note: "Our parents at one table, talking through one exhausted translator. Worth every word.",
+      photo: "photos/easter.jpg",
+    },
+    {
+      date: "April 25, 2026",
+      title: "Renaissance Faire",
+      caption: "The whole crew in costumes by Macy, sword swallowers, turkey legs, the naughty bar, and jousting to finish.",
+      note: "Best dressed at the faire again, and it was all your needle and thread. Huzzah.",
+      photo: "photos/ren-faire.jpg",
+    },
+    {
+      date: "May 2026",
+      title: "EDC Las Vegas, the finale",
+      caption: "His fifth and final EDC, camped in a shiftpod with Macy, Madison, Owen, and Viv, who flew home to a graduation and back in one day. Subtronics melted the sky. And a certain fake proposal fooled absolutely everyone.",
+      note: "You convinced me to go one last time. Watching you fall in love with my world was better than the other four EDCs combined.",
+      photo: "photos/edc-2026.jpg",
+    },
+  ],
+
+  /* ---- STAR MEMORIES (tap the bright stars over the pier) ------------ */
+  starMemories: [
+    "Your Hinge pictures were terrible. Helmet, Halloween makeup, side profile. I swiped anyway.",
+    "You opened with thirteen years of jiu-jitsu. Message received. Hands respectfully to myself.",
+    "Dan Da Dan remains the boldest first-date anime selection in recorded history.",
+    "You thought the first date went terribly. I was drafting my good-morning text before I even got home.",
+    "The neighbors absolutely heard the green Kawasaki coming. Worth it every single time.",
+    "Candy and Legos, Huntington Beach to Mission Viejo, just to say four words in person.",
+  ],
+  /* the dim hidden star, for whoever looks closely */
+  secretStar: "Out of every star over this pier, finding you is still the luckiest thing that has ever happened to me.",
+
+  /* ---- NOTES INSIDE THE MEMORY BOX ----------------------------------- */
+  boxNotes: [
+    "The one door policy",
+    "Hiiiii, Princess",
+    "Tiramipoo",
+    "Meat jello",
+    "The TV is a little too big",
+    "\"I didn't buy these tickets for nothing\"",
+  ],
+
+  /* ---- TO BE CONTINUED ------------------------------------------------ */
+  ending: {
+    kicker: "Year two",
+    title: "To Be Continued",
+    lines: [
+      "Same pier. Same stars.",
+      "More charms on the bracelet.",
+      "More paint on the condo walls.",
+      "More anime neither of us will admit to crying at.",
+      "More festivals, more cabins, more very large TVs.",
+    ],
+    big: "to be continued...",
+    signoff: "Made with love (and quite a lot of code) by Vlad, for Macy. June 10, 2026.",
+  },
+};
+
+/* =====================================================================
+   ████  END OF EDIT ZONE  ████
+   Everything below renders the site. No content lives down here.
+   ===================================================================== */
+
+const $  = (s, root) => (root || document).querySelector(s);
+const $$ = (s, root) => Array.from((root || document).querySelectorAll(s));
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function el(tag, cls, html){
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html != null) n.innerHTML = html;
+  return n;
+}
+
+const SPRIG_SVG = `<svg class="sprig-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <path d="M8 58C20 46 26 38 32 26S46 10 56 6" fill="none" stroke="var(--sage-deep)" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M20 44q-10-2-12-12 10 0 12 12z" fill="var(--sage)"/>
+  <path d="M26 36q2-12 12-14-2 12-12 14z" fill="var(--sage)"/>
+  <path d="M36 22q-10-2-11-12 10 1 11 12z" fill="var(--sage)"/>
+  <circle cx="49" cy="12" r="3" fill="var(--rose)"/>
+  <circle cx="56" cy="6" r="2.2" fill="var(--rose-deep)"/>
+  <circle cx="44" cy="18" r="2" fill="var(--rose)"/>
+</svg>`;
+
+/* photo with graceful placeholder while the real file is missing */
+function photoEl(src, alt){
+  const fig = el("figure", "photo");
+  const img = new Image();
+  img.loading = "lazy";
+  img.alt = alt || "";
+  img.onerror = () => {
+    const ph = el("div", "photo-ph",
+      SPRIG_SVG +
+      `<span class="ph-label">add photo</span>` +
+      `<span class="ph-file">${src.split("/").pop()}</span>`);
+    img.replaceWith(ph);
+  };
+  img.src = src;
+  fig.appendChild(img);
+  return fig;
+}
+
+/* toast helper */
+let toastTimer = null;
+function showToast(html, ms){
+  const t = $("#toast");
+  t.innerHTML = html;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), ms || 4200);
+  t.onclick = () => t.classList.remove("show");
+}
+
+/* modal helper */
+function openModal(html){
+  const m = $("#modal");
+  $("#modalPanel").innerHTML = `<button class="modal-close" aria-label="Close">&times;</button>` + html;
+  m.classList.add("show");
+  $(".modal-close", m).onclick = closeModal;
+  m.onclick = (e) => { if (e.target === m) closeModal(); };
+}
+function closeModal(){ $("#modal").classList.remove("show"); }
+
+/* section headers from CONFIG.sections */
+function renderSectionHeads(){
+  $$(".sec-head[data-sec]").forEach(h => {
+    const s = CONFIG.sections[h.dataset.sec];
+    if (!s) return;
+    h.innerHTML = `<p class="kicker">${s.kicker}</p><h2>${s.title}</h2><p class="intro">${s.intro}</p>`;
+  });
+}
+
+/* cover */
+function renderCover(){
+  $("#coverKicker").textContent = CONFIG.cover.kicker;
+  $("#nameHim").textContent = CONFIG.names.him;
+  $("#nameHer").textContent = CONFIG.names.her;
+  $("#coverSub").textContent = CONFIG.cover.subtitle;
+  $$(".sprig").forEach(s => s.innerHTML = SPRIG_SVG);
+  $("#signoff").textContent = CONFIG.ending.signoff;
+}
+
+/* falling petals on the cover */
+function setupPetals(){
+  if (reduced) return;
+  const host = $("#petals");
+  for (let i = 0; i < 14; i++){
+    const p = el("span", "petal");
+    p.style.left = (Math.random() * 100) + "%";
+    p.style.animationDuration = (9 + Math.random() * 8) + "s";
+    p.style.animationDelay = (-Math.random() * 16) + "s";
+    p.style.opacity = .35 + Math.random() * .4;
+    const inner = el("i");
+    inner.style.animationDuration = (2.4 + Math.random() * 2) + "s";
+    p.appendChild(inner);
+    host.appendChild(p);
+  }
+}
+
+/* reveal-on-scroll */
+function setupReveals(){
+  if (reduced){ $$(".reveal").forEach(n => n.classList.add("in")); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  $$(".reveal").forEach(n => io.observe(n));
+}
+
+/* section renderers (filled in by later build steps) */
+function renderPaths(){ /* anchor:render-paths */ }
+function renderConverge(){ /* anchor:render-converge */ }
+function renderPier(){ /* anchor:render-pier */ }
+function renderYear(){ /* anchor:render-year */ }
+function renderBox(){ /* anchor:render-box */ }
+function renderEnding(){ /* anchor:render-ending */ }
+function setupThreads(){ /* anchor:setup-threads */ }
+function startCounter(){ /* anchor:start-counter */ }
+function setupExtras(){ /* anchor:setup-extras */ }
+
+function init(){
+  renderCover();
+  renderSectionHeads();
+  renderPaths();
+  renderConverge();
+  renderPier();
+  renderYear();
+  renderBox();
+  renderEnding();
+  setupPetals();
+  setupThreads();
+  startCounter();
+  setupExtras();
+  setupReveals();
+}
+init();
+</script>
+</body>
+</html>
