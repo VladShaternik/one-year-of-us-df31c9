@@ -1038,20 +1038,27 @@ function setupReveals(){
 
 /* section renderers (filled in by later build steps) */
 /* ---- simplified, decorative maps ---- */
-const UKRAINE_SVG = `<svg viewBox="0 0 160 110" aria-hidden="true">
-  <path class="map-land" d="M16 48 Q18 32 34 28 Q42 14 62 16 Q82 8 100 18 Q122 14 136 26 Q152 34 146 48 Q140 60 124 62 Q116 72 102 70 Q110 82 102 92 Q92 86 94 74 Q78 80 62 74 Q44 76 32 64 Q14 62 16 48 Z"/>
-  <circle class="map-dot" cx="84" cy="44" r="3.4"/>
-  <text class="map-label" x="84" y="58" text-anchor="middle">Cherkasy</text>
-  <circle class="map-dot" cx="74" cy="34" r="2.2" opacity=".75"/>
-  <text class="map-label" x="72" y="27" text-anchor="middle">Pereiaslav</text>
+/* Ukraine, traced from real geography: flat northern border, the eastern
+   bulge, the Sea of Azov, Crimea hanging from its isthmus, the Black Sea
+   coast past Odesa, the Moldova/Romania dip, and the Zakarpattia tail. */
+const UKRAINE_SVG = `<svg viewBox="0 0 170 112" aria-hidden="true">
+  <path class="map-land" d="M18 12 L48 13 L79 6 L108 3 L113 16 L121 25 L143 28 L161 36 L165 44 L160 58 L141 66 L121 72 L119 77 L133 87 L131 91 L111 98 L105 96 L97 87 L106 78 L98 72 L81 74 L77 80 L71 88 L65 73 L45 53 L30 59 L6 50 L10 36 L18 26 Z"/>
+  <circle class="map-dot" cx="88" cy="30" r="2.2" opacity=".75"/>
+  <text class="map-label" x="88" y="23" text-anchor="middle">Pereiaslav</text>
+  <circle class="map-dot" cx="93" cy="38" r="3.4"/>
+  <text class="map-label" x="95" y="50" text-anchor="middle">Cherkasy</text>
 </svg>`;
 
-const CALIFORNIA_SVG = `<svg viewBox="0 0 110 160" aria-hidden="true">
-  <path class="map-land" d="M22 8 L64 8 L64 60 L96 104 L94 124 L84 128 L82 138 L58 138 L54 130 Q40 118 34 100 Q22 72 20 44 Q18 24 22 8 Z"/>
-  <circle class="map-dot" cx="72" cy="116" r="3.4"/>
-  <text class="map-label" x="66" y="110" text-anchor="end">Orange County</text>
-  <circle class="map-dot" cx="64" cy="124" r="2" opacity=".75"/>
-  <text class="map-label" x="58" y="152" text-anchor="middle">Huntington Beach</text>
+/* California, traced from real geography: straight northern border, the
+   Nevada corner at Lake Tahoe latitude, the long diagonal to the Colorado
+   River, the Mexico border, and the coast curving up past LA, Big Sur,
+   and San Francisco. Orange County sits where it really is, down south. */
+const CALIFORNIA_SVG = `<svg viewBox="0 0 110 162" aria-hidden="true">
+  <path class="map-land" d="M4 2 L48 2 L48 51 L105 116 L106 128 L103 143 L106 153 L79 157 L78 154 Q70 146 65 138 Q52 132 43 126 Q33 112 28 95 Q24 84 22 70 Q12 48 2 28 Z"/>
+  <circle class="map-dot" cx="71.5" cy="137.5" r="3.4"/>
+  <text class="map-label" x="66" y="133" text-anchor="end">Orange County</text>
+  <circle class="map-dot" cx="68" cy="142" r="2" opacity=".75"/>
+  <text class="map-label" x="52" y="152" text-anchor="middle">Huntington Beach</text>
 </svg>`;
 
 const GAP_SVG = `<svg class="gap-line" viewBox="0 0 60 24" aria-hidden="true">
