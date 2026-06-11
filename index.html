@@ -351,8 +351,17 @@ section{position:relative;padding:4.5rem 0}
 .pol-back .hand{font-size:1.4rem;line-height:1.4;color:var(--ink)}
 .pol-back .pol-date{margin-top:.9rem}
 
-/* ---- 5. memory box ---- */
+/* ---- memory box (inline in the year flow, after its polaroid) ---- */
+.box-inline{width:100%;margin:-.4rem 0 2.4rem;text-align:center}
+.box-inline .tap-hint{margin-top:.3rem}
 .box-scene{position:relative;height:440px;display:flex;align-items:flex-end;justify-content:center;perspective:700px}
+.video-card{margin-top:1.5rem;text-align:center;padding:.7rem .7rem .6rem}
+.video-card video{
+  display:block;width:100%;aspect-ratio:16/9;border-radius:10px;
+  background:#161410;object-fit:contain;
+}
+.video-ph{aspect-ratio:16/9;width:100%}
+.video-cap{font-size:1.1rem;color:var(--sage-deep);margin-top:.45rem}
 .mbox{position:relative;display:block;width:min(240px,70%);height:130px;-webkit-tap-highlight-color:transparent}
 .mbox-body{
   position:absolute;inset:0;z-index:1;display:block;border-radius:9px;
@@ -525,15 +534,7 @@ section{position:relative;padding:4.5rem 0}
     </div>
   </section>
 
-  <!-- ============ 5. THE MEMORY BOX ============ -->
-  <section id="box">
-    <div class="wrap">
-      <header class="sec-head reveal" data-sec="box"></header>
-      <div id="boxStage"></div>
-    </div>
-  </section>
-
-  <!-- ============ 6. TO BE CONTINUED ============ -->
+  <!-- ============ 5. TO BE CONTINUED ============ -->
   <section id="ending">
     <div class="wrap">
       <div id="endingFlow"></div>
@@ -623,11 +624,15 @@ const CONFIG = {
       title: "Our First Year",
       intro: "Three hundred sixty-five days, give or take a broken bone. Here are the keepers. Tap any photo to turn it over.",
     },
-    box: {
-      kicker: "A box of us",
-      title: "The Memory Box",
-      intro: "While she was away on a cruise, he spent three sleepless days building her a hand-made box of every memory so far. This is its little digital cousin. Go on, tap it.",
-    },
+  },
+
+  /* ---- THE MEMORY BOX (renders inline, right after its polaroid) ------
+     The video is your timelapse of building the box. Drop the file into
+     photos/ as an .mp4 (H.264); until it exists a placeholder shows. */
+  box: {
+    hint: "its little digital cousin: tap it",
+    video: "photos/memory-box-timelapse.mp4",
+    videoCaption: "three sleepless nights, in fast forward",
   },
 
   /* ---- HIS PATH (left thread, sage) -------------------------------- */
@@ -772,6 +777,7 @@ const CONFIG = {
       caption: "While she sailed away on a long-planned cruise, he stayed up three nights straight building her a box of every memory so far.",
       note: "You showed this box to every single relative on that ship's group chat. That is when I knew the three sleepless nights were worth it. One door policy meme included, obviously.",
       photo: "photos/memory-box.jpg",
+      box: true, /* the interactive digital box + timelapse video render right after this card */
     },
     {
       date: "Summer 2025",
@@ -1380,12 +1386,34 @@ function renderYear(){
       if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
     });
     flow.appendChild(pol);
+    if (m.box) flow.appendChild(memoryBoxBlock());
   });
 }
 
-function renderBox(){
-  const stage = $("#boxStage");
-  const scene = el("div", "box-scene reveal");
+/* video with the same graceful placeholder treatment as photos */
+function videoCard(src, caption){
+  const card = el("div", "card video-card reveal");
+  const v = document.createElement("video");
+  v.controls = true;
+  v.playsInline = true;
+  v.preload = "metadata";
+  v.addEventListener("error", () => {
+    const ph = el("div", "photo-ph video-ph",
+      SPRIG_SVG +
+      `<span class="ph-label">add video</span>` +
+      `<span class="ph-file">${src.split("/").pop()}</span>`);
+    v.replaceWith(ph);
+  });
+  v.src = src;
+  card.appendChild(v);
+  if (caption) card.appendChild(el("p", "video-cap hand", caption));
+  return card;
+}
+
+/* the interactive box, rendered inline right after the memory-box polaroid */
+function memoryBoxBlock(){
+  const block = el("div", "box-inline reveal");
+  const scene = el("div", "box-scene");
   const box = el("button", "mbox");
   box.setAttribute("aria-label", "Open the memory box");
   const FLY = [
@@ -1409,9 +1437,10 @@ function renderBox(){
       box.classList.contains("open") ? "Close the memory box" : "Open the memory box");
   });
   scene.appendChild(box);
-  stage.appendChild(scene);
-  stage.appendChild(el("p", "tap-hint", "tap the box"));
-  stage.querySelector(".tap-hint").style.textAlign = "center";
+  block.appendChild(scene);
+  block.appendChild(el("p", "tap-hint", CONFIG.box.hint));
+  if (CONFIG.box.video) block.appendChild(videoCard(CONFIG.box.video, CONFIG.box.videoCaption));
+  return block;
 }
 
 function renderEnding(){
@@ -1600,7 +1629,6 @@ function init(){
   renderConverge();
   renderPier();
   renderYear();
-  renderBox();
   renderEnding();
   setupPetals();
   setupThreads();
