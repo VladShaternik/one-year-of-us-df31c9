@@ -56,6 +56,13 @@ YEAR ONE (polaroid wall, in order)
   six-months.jpg       six-month celebration / Orange Hill
   christmas.jpg        Santa and Mrs. Claus
   new-year.jpg         Ukrainian New Year table
+  valentines.jpg       Valentine's in Vegas (Omega Mart / "O" / Mastro's)
   easter.jpg           either Easter (or a collage)
   ren-faire.jpg        Renaissance Faire
   edc-2026.jpg         EDC Las Vegas 2026
+
+VIDEO (shows under the digital memory box)
+  memory-box-timelapse.mp4   timelapse of building the memory box
+  Use H.264 .mp4. Compress to roughly 30-50MB or less so the page stays
+  quick on a phone; GitHub rejects any file over 100MB. (On a Mac, iMovie
+  or QuickTime export at 1080p works fine.)
