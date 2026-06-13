@@ -13,8 +13,10 @@ Tips:
 - Story cards crop to 4:3 and polaroids crop to square, both centered. Faces
   near the middle of the frame work best.
 
+Note: the two "born" cards (Vlad 1999, Macy 2004) do not use photos.
+They play small animated scenes instead, since no baby pictures exist.
+
 VLAD'S PATH (childhood, left thread)
-  vlad-baby.jpg        born in Pereiaslav, 1999
   vlad-cherkasy.jpg    growing up in Cherkasy
   vlad-village.jpg     summers in Tsybli (potatoes, grandparents)
   vlad-computer.jpg    first computer / NFS Underground 2 era
@@ -23,7 +25,6 @@ VLAD'S PATH (childhood, left thread)
   vlad-edc.jpg         EDC / gym transformation years
 
 MACY'S PATH (childhood, right thread)
-  macy-baby.jpg        born 2004
   macy-school.jpg      school days
   macy-bjj.jpg         13 years of jiu-jitsu
   macy-sisters.jpg     Madison, Kaylee, Ashlyn

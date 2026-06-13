@@ -200,6 +200,37 @@ section{position:relative;padding:4.5rem 0}
 .flight-stop{fill:var(--rose-deep)}
 @keyframes flightDash{to{stroke-dashoffset:-100}}
 
+/* ---- birth vignettes: three-act scenes that play as you scroll ---- */
+.vignette{position:relative}
+.vig-stage{position:absolute;inset:0;opacity:0;transition:opacity .55s ease}
+.vig-stage svg{width:100%;height:100%;display:block}
+.vignette[data-stage="0"] .vig-stage[data-i="0"],
+.vignette[data-stage="1"] .vig-stage[data-i="1"],
+.vignette[data-stage="2"] .vig-stage[data-i="2"]{opacity:1}
+.vig-cap{
+  position:absolute;left:50%;bottom:.55rem;transform:translateX(-50%);
+  width:max-content;max-width:92%;
+  background:rgba(255,253,247,.9);color:var(--ink);
+  padding:.05rem .7rem;border-radius:99px;
+  font-size:1.02rem;line-height:1.45;text-align:center;
+  opacity:0;transition:opacity .55s ease;pointer-events:none;
+}
+.vignette[data-stage="0"] .vig-cap[data-i="0"],
+.vignette[data-stage="1"] .vig-cap[data-i="1"],
+.vignette[data-stage="2"] .vig-cap[data-i="2"]{opacity:1}
+
+/* small ambient movements inside the scenes */
+.vg-tw{animation:twinkle 2.8s ease-in-out infinite alternate}
+.vg-glowwin{animation:lampFlicker 3s ease-in-out infinite alternate}
+.vg-beat{transform-box:fill-box;transform-origin:center;animation:vgBeat 1.7s ease-in-out infinite}
+@keyframes vgBeat{0%,100%{scale:1}28%{scale:1.28}}
+.vg-sway{transform-box:fill-box;transform-origin:top center;animation:vgSway 2.6s ease-in-out infinite alternate}
+@keyframes vgSway{from{rotate:-8deg}to{rotate:8deg}}
+.vg-popstar{transform-box:fill-box;transform-origin:center;animation:vgPopStar 3.2s ease-in-out infinite}
+@keyframes vgPopStar{0%,15%{opacity:0;scale:.3}30%,72%{opacity:1;scale:1}88%,100%{opacity:0;scale:.5}}
+.vg-breathe{transform-box:fill-box;transform-origin:center;animation:vgBreathe 3.4s ease-in-out infinite alternate}
+@keyframes vgBreathe{from{scale:.94}to{scale:1.06}}
+
 /* ---- 2. convergence ---- */
 #converge{overflow:hidden}
 .meet-card{width:88%;margin:0 auto 2rem}
@@ -629,6 +660,22 @@ const CONFIG = {
     },
   },
 
+  /* ---- VIGNETTE CAPTIONS ----------------------------------------------
+     The two "born" cards play little animated scenes instead of photos.
+     Each scene has three acts; these are the captions for each act. */
+  vignettes: {
+    "vlad-birth": [
+      "Pereiaslav, 1999. Two long days.",
+      "Months until mom was strong again.",
+      "And the kid? Already studying the ceiling.",
+    ],
+    "macy-birth": [
+      "For five years, one thread wandered alone.",
+      "Then: 2004.",
+      "Worth every minute of the wait.",
+    ],
+  },
+
   /* ---- THE MEMORY BOX (renders inline, right after its polaroid) ------
      The video is your timelapse of building the box. Drop the file into
      photos/ as an .mp4 (H.264); until it exists a placeholder shows. */
@@ -644,7 +691,9 @@ const CONFIG = {
       year: "1999",
       title: "A stubborn arrival",
       text: "Born in Pereiaslav, Ukraine, after a delivery that took two full days and nearly took his mom with it. It took her months to recover. He, meanwhile, was already busy learning everything in sight.",
-      photo: "photos/vlad-baby.jpg",
+      /* no baby photos exist, so this card plays an animated three-act
+         scene as you scroll; its captions live in CONFIG.vignettes below */
+      vignette: "vlad-birth",
     },
     {
       year: "2000s",
@@ -691,7 +740,7 @@ const CONFIG = {
       year: "2004",
       title: "Worth the wait",
       text: "Macy arrived in 2004. Vlad simply showed up five years early to scout ahead, learn some things, and get everything ready for her.",
-      photo: "photos/macy-baby.jpg",
+      vignette: "macy-birth",
     },
     {
       year: "School days",
@@ -1095,6 +1144,181 @@ const FLIGHT_SVG = `<svg viewBox="0 0 320 80" aria-hidden="true">
   <text x="160" y="78" text-anchor="middle" style="font-family:'Caveat',cursive;font-size:14px;fill:var(--sage-deep)">September 2015: home</text>
 </svg>`;
 
+/* ---- birth vignette artwork (three acts per scene) ---- */
+const VIGNETTE_ART = {
+  "vlad-birth": [
+    /* act 1: a night in Pereiaslav, one window lit at the hospital */
+    `<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><linearGradient id="vgN1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2B3457"/><stop offset="1" stop-color="#141C38"/>
+      </linearGradient></defs>
+      <rect width="200" height="150" fill="url(#vgN1)"/>
+      <circle class="vg-tw" cx="26" cy="22" r="1.4" fill="#fff"/>
+      <circle class="vg-tw" cx="58" cy="14" r="1.1" fill="#fff" style="animation-delay:-1s"/>
+      <circle class="vg-tw" cx="118" cy="20" r="1.3" fill="#fff" style="animation-delay:-2s"/>
+      <circle class="vg-tw" cx="44" cy="44" r="1.1" fill="#fff" style="animation-delay:-.6s"/>
+      <circle class="vg-tw" cx="150" cy="48" r="1.2" fill="#fff" style="animation-delay:-1.6s"/>
+      <circle cx="166" cy="26" r="17" fill="rgba(240,230,200,.16)"/>
+      <circle cx="166" cy="26" r="11" fill="#F0E6C8"/>
+      <rect y="118" width="200" height="32" fill="#0E1530"/>
+      <rect x="52" y="58" width="96" height="62" rx="3" fill="#1D2647"/>
+      <rect x="90" y="42" width="20" height="16" rx="2" fill="#2A3357"/>
+      <path d="M100 45.5 v9 M95.5 50 h9" stroke="var(--rose)" stroke-width="2.6" stroke-linecap="round"/>
+      <g fill="#10182f">
+        <rect x="62" y="68" width="12" height="14" rx="1.5"/><rect x="86" y="68" width="12" height="14" rx="1.5"/><rect x="110" y="68" width="12" height="14" rx="1.5"/><rect x="134" y="68" width="12" height="14" rx="1.5"/>
+        <rect x="62" y="92" width="12" height="14" rx="1.5"/><rect x="86" y="92" width="12" height="14" rx="1.5"/><rect x="134" y="92" width="12" height="14" rx="1.5"/>
+      </g>
+      <rect class="vg-glowwin" x="110" y="92" width="12" height="14" rx="1.5" fill="var(--gold)" style="filter:drop-shadow(0 0 5px rgba(232,201,143,.9))"/>
+      <rect x="93" y="104" width="14" height="16" rx="2" fill="#0E1530"/>
+    </svg>`,
+    /* act 2: mom resting, crib beside the bed, a steady little heart */
+    `<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="200" height="150" fill="#FBF3E4"/>
+      <rect y="112" width="200" height="38" fill="#F2E7CE"/>
+      <rect x="16" y="26" width="38" height="32" rx="3" fill="#FDF8EC" stroke="var(--sage)" stroke-width="2.5"/>
+      <path d="M35 26 v32 M16 42 h38" stroke="var(--sage)" stroke-width="2"/>
+      <circle cx="26" cy="50" r="6" fill="var(--gold)" opacity=".85"/>
+      <rect x="62" y="60" width="9" height="52" rx="3.5" fill="#C9A57E"/>
+      <rect x="66" y="84" width="86" height="22" rx="8" fill="#FFFDF7" stroke="#E5D9C2" stroke-width="2"/>
+      <ellipse cx="84" cy="84" rx="12" ry="6.5" fill="#FFFDF7" stroke="#E5D9C2" stroke-width="2"/>
+      <circle cx="86" cy="76" r="8" fill="#F3D8C3"/>
+      <circle cx="80" cy="70" r="4" fill="#6B4F3A"/>
+      <path d="M83 77 q2.6 2 5.2 0" stroke="#6B4F3A" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M96 82 h54 a8 8 0 0 1 8 8 v16 h-62 z" fill="var(--sage)"/>
+      <path d="M100 90 h52 M100 98 h52" stroke="#FFFDF7" stroke-width="1.4" stroke-dasharray="3 5" opacity=".7"/>
+      <g stroke="#C9A57E" stroke-width="2.5" stroke-linecap="round">
+        <line x1="166" y1="88" x2="166" y2="118"/><line x1="192" y1="88" x2="192" y2="118"/>
+      </g>
+      <rect x="162" y="92" width="34" height="16" rx="5" fill="none" stroke="#C9A57E" stroke-width="2.5"/>
+      <line x1="171" y1="92" x2="171" y2="108" stroke="#C9A57E" stroke-width="1.6"/>
+      <line x1="179" y1="92" x2="179" y2="108" stroke="#C9A57E" stroke-width="1.6"/>
+      <line x1="187" y1="92" x2="187" y2="108" stroke="#C9A57E" stroke-width="1.6"/>
+      <circle cx="179" cy="86" r="5.5" fill="#F3D8C3"/>
+      <path d="M173 86 a6 6 0 0 1 12 0" fill="var(--rose)"/>
+      <path class="vg-beat" d="M140 52 c-2.6-4.2-8.8-2.2-8.8 2.4 0 3.6 4.9 6.6 8.8 9.2 3.9-2.6 8.8-5.6 8.8-9.2 0-4.6-6.2-6.6-8.8-2.4z" fill="var(--rose-deep)"/>
+    </svg>`,
+    /* act 3: a very curious kid, blocks, book, ideas popping */
+    `<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="200" height="150" fill="#FAF3E3"/>
+      <rect y="116" width="200" height="34" fill="#F0E4C8"/>
+      <circle cx="78" cy="74" r="12" fill="#F3D8C3"/>
+      <path d="M70 66 q4 -7 12 -5 l-2 5 z" fill="#6B4F3A"/>
+      <circle cx="74.5" cy="73" r="1.4" fill="#4F463B"/>
+      <circle cx="81.5" cy="73" r="1.4" fill="#4F463B"/>
+      <path d="M75 79 q3 2.4 6 0" stroke="#4F463B" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <rect x="66" y="86" width="24" height="26" rx="8" fill="var(--sage-deep)"/>
+      <rect x="62" y="110" width="12" height="7" rx="3.5" fill="#F3D8C3"/>
+      <rect x="82" y="110" width="12" height="7" rx="3.5" fill="#F3D8C3"/>
+      <path d="M96 100 l22 -6 22 6 -22 7 z" fill="#FFFDF7" stroke="#C9AF8B" stroke-width="2"/>
+      <path d="M118 94 v13" stroke="#C9AF8B" stroke-width="1.4"/>
+      <g>
+        <rect x="148" y="98" width="17" height="17" rx="2" fill="var(--rose)"/>
+        <text x="156.5" y="111" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#FFFDF7">А</text>
+        <rect x="167" y="98" width="17" height="17" rx="2" fill="var(--sage)"/>
+        <text x="175.5" y="111" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#FFFDF7">Б</text>
+        <rect x="157" y="80" width="17" height="17" rx="2" fill="var(--gold)"/>
+        <text x="165.5" y="93" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#FFFDF7">В</text>
+      </g>
+      <path class="vg-popstar" d="M58 38 l2.2 6 6 2.2 -6 2.2 -2.2 6 -2.2 -6 -6 -2.2 6 -2.2 z" fill="var(--gold)"/>
+      <path class="vg-popstar" d="M88 26 l2 5.4 5.4 2 -5.4 2 -2 5.4 -2 -5.4 -5.4 -2 5.4 -2 z" fill="var(--gold)" style="animation-delay:-1.1s"/>
+      <text class="vg-popstar" x="112" y="44" font-family="Caveat,cursive" font-size="22" fill="var(--rose-deep)" style="animation-delay:-2.2s">?</text>
+    </svg>`,
+  ],
+  "macy-birth": [
+    /* act 1: one sage thread, wandering by itself */
+    `<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="200" height="150" fill="#F6EFDF"/>
+      <g fill="#EDE3CC">
+        <ellipse cx="44" cy="30" rx="20" ry="8"/><ellipse cx="58" cy="26" rx="14" ry="7"/>
+        <ellipse cx="152" cy="46" rx="18" ry="7"/><ellipse cx="164" cy="42" rx="12" ry="6"/>
+      </g>
+      <path d="M30 18 q4 -4 8 0 M38 18 q4 -4 8 0" stroke="#A99C88" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".6"/>
+      <path d="M120 24 q4 -4 8 0 M128 24 q4 -4 8 0" stroke="#A99C88" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".6"/>
+      <path d="M-6 96 C 28 70, 52 118, 86 94 S 150 70, 206 98" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M86 94 q-3 -10 -13 -11 3 10 13 11z" fill="var(--sage)" opacity=".8"/>
+    </svg>`,
+    /* act 2: 2004 blooms into the picture */
+    `<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="200" height="150" fill="#F6EFDF"/>
+      <g fill="#EDE3CC"><ellipse cx="40" cy="28" rx="18" ry="7"/><ellipse cx="52" cy="24" rx="12" ry="6"/></g>
+      <path d="M-6 96 C 28 74, 56 112, 92 92 Q 116 80 128 86" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round"/>
+      <g class="vg-breathe">
+        <g fill="var(--rose)">
+          <ellipse cx="138" cy="74" rx="7" ry="11"/>
+          <ellipse cx="138" cy="98" rx="7" ry="11"/>
+          <ellipse cx="126" cy="86" rx="11" ry="7"/>
+          <ellipse cx="150" cy="86" rx="11" ry="7"/>
+          <ellipse cx="129.5" cy="77.5" rx="7.5" ry="7.5" transform="rotate(-45 129.5 77.5)"/>
+          <ellipse cx="146.5" cy="77.5" rx="7.5" ry="7.5" transform="rotate(45 146.5 77.5)"/>
+          <ellipse cx="129.5" cy="94.5" rx="7.5" ry="7.5" transform="rotate(45 129.5 94.5)"/>
+          <ellipse cx="146.5" cy="94.5" rx="7.5" ry="7.5" transform="rotate(-45 146.5 94.5)"/>
+        </g>
+        <circle cx="138" cy="86" r="9" fill="var(--gold)"/>
+      </g>
+      <text x="138" y="44" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="26" font-weight="600" fill="var(--rose-deep)">2004</text>
+      <path class="vg-tw" d="M170 60 l1.6 4.4 4.4 1.6 -4.4 1.6 -1.6 4.4 -1.6 -4.4 -4.4 -1.6 4.4 -1.6 z" fill="var(--gold)"/>
+      <path class="vg-tw" d="M104 56 l1.4 3.8 3.8 1.4 -3.8 1.4 -1.4 3.8 -1.4 -3.8 -3.8 -1.4 3.8 -1.4 z" fill="var(--gold)" style="animation-delay:-1.4s"/>
+    </svg>`,
+    /* act 3: the cradle, with a mobile gently swaying above it */
+    `<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="200" height="150" fill="#FBF3E4"/>
+      <rect y="118" width="200" height="32" fill="#F2E7CE"/>
+      <path d="M138 96 V44 q0 -9 -9 -9 H92" fill="none" stroke="#A78D67" stroke-width="3.5" stroke-linecap="round"/>
+      <g class="vg-sway">
+        <line x1="98" y1="35" x2="98" y2="50" stroke="#A78D67" stroke-width="1.4"/>
+        <path d="M98 50 l2 5.4 5.4 2 -5.4 2 -2 5.4 -2 -5.4 -5.4 -2 5.4 -2 z" fill="var(--gold)"/>
+      </g>
+      <g class="vg-sway" style="animation-delay:-.9s">
+        <line x1="114" y1="35" x2="114" y2="56" stroke="#A78D67" stroke-width="1.4"/>
+        <path d="M114 56 a7 7 0 1 0 6 10 a5.5 5.5 0 0 1 -6 -10z" fill="#F0E6C8"/>
+      </g>
+      <g class="vg-sway" style="animation-delay:-1.7s">
+        <line x1="129" y1="35" x2="129" y2="52" stroke="#A78D67" stroke-width="1.4"/>
+        <g fill="var(--rose)">
+          <ellipse cx="125.5" cy="55" rx="4" ry="2.8" transform="rotate(-28 125.5 55)"/>
+          <ellipse cx="132.5" cy="55" rx="4" ry="2.8" transform="rotate(28 132.5 55)"/>
+          <ellipse cx="126" cy="60" rx="3.2" ry="2.2" transform="rotate(28 126 60)"/>
+          <ellipse cx="132" cy="60" rx="3.2" ry="2.2" transform="rotate(-28 132 60)"/>
+        </g>
+        <line x1="129" y1="53" x2="129" y2="62" stroke="#6B4F3A" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+      <path d="M52 92 h74 v12 a37 16 0 0 1 -74 0 z" fill="#C9A57E"/>
+      <path d="M46 126 q43 18 86 0" fill="none" stroke="#A78D67" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="64" y1="116" x2="60" y2="126" stroke="#A78D67" stroke-width="3"/>
+      <line x1="114" y1="116" x2="118" y2="126" stroke="#A78D67" stroke-width="3"/>
+      <circle cx="74" cy="88" r="7.5" fill="#F3D8C3"/>
+      <path d="M66.5 88 a7.5 7.5 0 0 1 15 0" fill="var(--rose)"/>
+      <path d="M84 92 h40 a6 6 0 0 1 -2 6 h-38 z" fill="var(--rose)" opacity=".85"/>
+      <text x="58" y="70" font-family="Caveat,cursive" font-size="14" fill="#A99C88">z</text>
+      <text x="66" y="60" font-family="Caveat,cursive" font-size="17" fill="#A99C88">z</text>
+    </svg>`,
+  ],
+};
+
+/* a vignette fills the photo slot and advances through its acts with --p */
+function vignetteEl(key){
+  const art = VIGNETTE_ART[key] || [];
+  const caps = (CONFIG.vignettes && CONFIG.vignettes[key]) || [];
+  const fig = el("figure", "photo vignette");
+  fig.dataset.stage = 0;
+  art.forEach((svg, i) => {
+    const s = el("div", "vig-stage", svg);
+    s.dataset.i = i;
+    fig.appendChild(s);
+  });
+  caps.forEach((c, i) => {
+    const sp = el("span", "vig-cap hand", c);
+    sp.dataset.i = i;
+    fig.appendChild(sp);
+  });
+  const n = Math.max(1, art.length);
+  registerStory(fig, p => {
+    const idx = Math.min(n - 1, Math.floor(p * n));
+    if (+fig.dataset.stage !== idx) fig.dataset.stage = idx;
+  });
+  return fig;
+}
+
 function renderPaths(){
   $("#mapsRow").innerHTML = `
     <div class="map-card">${UKRAINE_SVG}<div class="map-name">Ukraine</div><div class="map-sub">his side of the world</div></div>
@@ -1110,7 +1334,8 @@ function renderPaths(){
 function pathCard(item, side, labeled){
   const c = el("article", `card path-card reveal ${side}`);
   if (labeled) c.appendChild(el("span", "who-chip", side === "him" ? CONFIG.names.him : CONFIG.names.her));
-  c.appendChild(photoEl(item.photo, item.title));
+  if (item.vignette) c.appendChild(vignetteEl(item.vignette));
+  else c.appendChild(photoEl(item.photo, item.title));
   c.appendChild(el("span", "year", item.year));
   c.appendChild(el("h3", null, item.title));
   c.appendChild(el("p", null, item.text));
