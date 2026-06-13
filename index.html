@@ -331,9 +331,12 @@ section{position:relative;padding:4.5rem 0}
 .pol{
   width:min(86%,340px);margin-bottom:2.1rem;perspective:1200px;cursor:pointer;
   -webkit-tap-highlight-color:transparent;
+  --p:1;
 }
-.pol:nth-child(odd){align-self:flex-start;margin-left:2%;rotate:-1.6deg}
-.pol:nth-child(even){align-self:flex-end;margin-right:2%;rotate:1.4deg}
+/* cards drift in with extra tilt and settle to rest as they arrive */
+.pol:not(.alt){align-self:flex-start;margin-left:2%;rotate:calc(-1.6deg - (1 - var(--p)) * 2.6deg)}
+.pol.alt{align-self:flex-end;margin-right:2%;rotate:calc(1.4deg + (1 - var(--p)) * 2.6deg)}
+.pol-front .photo img{height:116%;translate:0 calc(var(--p) * -16px)}
 .pol-inner{display:grid;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.7,.25,1)}
 .pol.flipped .pol-inner{transform:rotateY(180deg)}
 .pol-face{
@@ -1369,8 +1372,8 @@ function renderPier(){
 function renderYear(){
   const flow = $("#yearFlow");
   flow.className = "pol-flow";
-  CONFIG.yearMoments.forEach(m => {
-    const pol = el("div", "pol reveal");
+  CONFIG.yearMoments.forEach((m, i) => {
+    const pol = el("div", "pol reveal" + (i % 2 ? " alt" : ""));
     pol.setAttribute("role", "button");
     pol.tabIndex = 0;
     pol.setAttribute("aria-label", m.title + ". Tap to flip the photo over.");
@@ -1392,6 +1395,7 @@ function renderYear(){
     pol.addEventListener("keydown", e => {
       if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
     });
+    registerStory(pol);
     flow.appendChild(pol);
     if (m.box) flow.appendChild(memoryBoxBlock());
   });
@@ -1536,6 +1540,58 @@ function drawThreads(){
 function onThreadScroll(){
   if (!threadTick){ threadTick = true; requestAnimationFrame(drawThreads); }
 }
+/* ---- scroll story engine ----------------------------------------------
+   Elements registered here get a CSS custom property --p that goes from 0
+   (element entering at the bottom of the screen) to 1 (element risen to
+   about a third from the top). All the little story animations key off it.
+   With reduced motion, everything is pinned to its finished state. */
+const storyItems = new Map();
+const storyActive = new Set();
+const storyIO = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) storyActive.add(en.target);
+    else storyActive.delete(en.target);
+  });
+  onStoryScroll();
+}, { rootMargin: "30% 0px 30% 0px" });
+
+function registerStory(el, fn){
+  if (reduced){
+    el.style.setProperty("--p", 1);
+    if (fn) fn(1);
+    return;
+  }
+  storyItems.set(el, { fn: fn || null, p: -1 });
+  storyIO.observe(el);
+}
+let storyTick = false;
+function storyFrame(){
+  storyTick = false;
+  const vh = window.innerHeight;
+  storyActive.forEach(el => {
+    const it = storyItems.get(el);
+    if (!it) return;
+    const r = el.getBoundingClientRect();
+    let p = (vh - r.top) / (vh * 0.68);
+    p = Math.min(1, Math.max(0, p));
+    p = Math.round(p * 400) / 400;
+    if (it.p === p) return;
+    it.p = p;
+    el.style.setProperty("--p", p);
+    if (it.fn) it.fn(p);
+  });
+}
+function onStoryScroll(){
+  if (!storyTick){ storyTick = true; requestAnimationFrame(storyFrame); }
+}
+function setupStoryEngine(){
+  if (reduced) return;
+  window.addEventListener("scroll", onStoryScroll, { passive: true });
+  window.addEventListener("resize", onStoryScroll);
+  window.addEventListener("load", onStoryScroll);
+  onStoryScroll();
+}
+
 let threadResizeTimer = null;
 function setupThreads(){
   buildThreads();
@@ -1630,6 +1686,7 @@ function setupExtras(){
 }
 
 function init(){
+  setupStoryEngine();
   renderCover();
   renderSectionHeads();
   renderPaths();
