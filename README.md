@@ -31,11 +31,6 @@ placeholder with the expected filename on it, so the page looks finished even
 while photos are missing. Resize to roughly 1200px on the long side so it
 loads fast on a phone.
 
-There is also one video slot: `photos/memory-box-timelapse.mp4`, the
-timelapse of building the memory box. It plays under the interactive box in
-the Year One section. Use H.264 .mp4 and keep it well under 100MB (GitHub's
-hard limit); 30-50MB or less keeps the page quick.
-
 ## Previewing locally
 
 From this folder:
