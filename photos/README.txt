@@ -38,7 +38,8 @@ HOW WE MET
   first-date.jpg       first date / Dan Da Dan
   ferris-wheel.jpg     Irvine Spectrum ferris wheel
   parents.jpg          meeting her parents / tiramisu
-  i-love-you.jpg       the candy-and-Legos visit
+  (the "Candy, Legos, and four words" card uses an animated map of her
+   drive, so it needs no photo)
   kawasaki.jpg         the green Kawasaki Ninja
 
 THE PIER

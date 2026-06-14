@@ -880,8 +880,8 @@ const CONFIG = {
       date: "A few days later",
       title: "Candy, Legos, and four words",
       text: "She needed a little time to say it back, and she refused to say it over text. So she drove from Huntington Beach to Mission Viejo with an armful of candy and Legos. \"Do you know why I came all the way here? To tell you that I love you.\" Best feeling in the world.",
-      photo: "photos/i-love-you.jpg",
-      anim: "legoHeart",
+      /* no photo; the slot plays an animated map of her drive (see SCENES) */
+      scene: "driveMap",
     },
     {
       date: "Those weeks",
@@ -1452,6 +1452,43 @@ const SCENES = {
     ${rejectCard(0.3)}
     ${rejectCard(0.08)}
     <text class="pop" style="--t:.86" x="100" y="138" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="var(--ink-soft)">finally.</text>
+  </svg>`,
+
+  /* her drive: a heart travels Huntington Beach -> Mission Viejo, then
+     "I love you" lands. The route draws and the heart moves with --p. */
+  driveMap: `<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="200" height="150" fill="#F1ECDC"/>
+    <path d="M0 44 Q34 56 40 78 Q46 104 90 122 Q120 134 140 150 L0 150 Z" fill="#BFD0CE"/>
+    <path d="M0 44 Q34 56 40 78 Q46 104 90 122 Q120 134 140 150" fill="none" stroke="#9DB4B2" stroke-width="1.5"/>
+    <g stroke="#E2D9C4" stroke-width="1.4" fill="none">
+      <path d="M70 0 V120"/><path d="M120 10 V150"/><path d="M60 40 H200"/><path d="M80 86 H200"/>
+    </g>
+    <!-- faint full route, then the traveled portion draws over it -->
+    <path d="M46 64 C 86 76, 116 92, 156 98" fill="none" stroke="#C9B79A" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round"/>
+    <path d="M46 64 C 86 76, 116 92, 156 98" pathLength="100" fill="none" stroke="var(--rose-deep)" stroke-width="2.4" stroke-linecap="round" style="stroke-dasharray:100;stroke-dashoffset:calc(100 - 100 * var(--p,1))"/>
+    <!-- candy and a lego she carried, popping in along the way -->
+    <g class="pop" style="--t:.32"><ellipse cx="92" cy="80" rx="5" ry="3.4" fill="var(--rose)"/><path d="M87 80 l-4 -2.6 v5.2 z M97 80 l4 -2.6 v5.2 z" fill="var(--rose)"/></g>
+    <g class="pop" style="--t:.5"><rect x="112" y="90" width="14" height="7.5" rx="1.5" fill="var(--sage)"/><circle cx="115.5" cy="89.5" r="1.7" fill="var(--sage)"/><circle cx="122" cy="89.5" r="1.7" fill="var(--sage)"/></g>
+    <!-- start pin: Huntington Beach -->
+    <path d="M46 64 c -5 -6 -5 -13 0 -16 c 5 3 5 10 0 16 z" fill="var(--sage-deep)" transform="translate(0 -2)"/>
+    <circle cx="46" cy="51" r="2.6" fill="#F1ECDC"/>
+    <text x="9" y="44" font-family="Caveat,cursive" font-size="11" fill="var(--ink)">Huntington Beach</text>
+    <!-- end pin: Mission Viejo -->
+    <path d="M156 100 c -5.5 -6.5 -5.5 -14 0 -17.5 c 5.5 3.5 5.5 11 0 17.5 z" fill="var(--rose-deep)"/>
+    <circle cx="156" cy="87" r="2.8" fill="#F1ECDC"/>
+    <text x="194" y="118" text-anchor="end" font-family="Caveat,cursive" font-size="11" fill="var(--ink)">Mission Viejo</text>
+    <!-- the traveling heart -->
+    <g class="pathRider" style="offset-path:path('M46 64 C 86 76, 116 92, 156 98')">
+      <circle r="8" fill="#FFFDF7" stroke="var(--rose-deep)" stroke-width="1.6"/>
+      <path d="M0 3.6 C -4.6 -1 -6.6 -4.4 -3.3 -4.4 C -1.4 -4.4 0 -2.6 0 -1.3 C 0 -2.6 1.4 -4.4 3.3 -4.4 C 6.6 -4.4 4.6 -1 0 3.6 Z" fill="var(--rose-deep)"/>
+    </g>
+    <!-- "I love you" lands at the destination -->
+    <g class="pop" style="--t:.82">
+      <rect x="112" y="52" width="72" height="22" rx="11" fill="#FFFDF7" stroke="rgba(79,70,59,.14)" stroke-width="1"/>
+      <path d="M150 73 l5 9 7 -7 z" fill="#FFFDF7"/>
+      <text x="148" y="67" text-anchor="middle" font-family="Caveat,cursive" font-size="15" fill="var(--rose-deep)">I love you!</text>
+      <path d="M174 62 c -1.6 -2.6 -5.2 -1.2 -5.2 1.5 c 0 2.1 2.9 4 5.2 5.6 c 2.3 -1.6 5.2 -3.5 5.2 -5.6 c 0 -2.7 -3.6 -4.1 -5.2 -1.5 z" fill="var(--rose)"/>
+    </g>
   </svg>`,
 };
 function sceneEl(key){
