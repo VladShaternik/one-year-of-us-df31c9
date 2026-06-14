@@ -33,7 +33,8 @@ MACY'S PATH (childhood, right thread)
   macy-cyra.jpg        Cyra the Princess / plexiglass paintings
 
 HOW WE MET
-  the-app.jpg          the Hinge era (a screenshot works great here)
+  (the "Two burnouts, one app" card uses an animated phone-swipe scene,
+   so it needs no photo)
   first-date.jpg       first date / Dan Da Dan
   ferris-wheel.jpg     Irvine Spectrum ferris wheel
   parents.jpg          meeting her parents / tiramisu
